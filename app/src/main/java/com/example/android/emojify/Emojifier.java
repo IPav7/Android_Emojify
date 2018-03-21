@@ -31,20 +31,33 @@ public class Emojifier {
                 .setClassificationType(FaceDetector.ALL_CLASSIFICATIONS)
                 .build();
         Frame frame = new Frame.Builder().setBitmap(bitmap).build();
+
        // if(!faceDetector.isOperational()) {
-            SparseArray<Face> faces = faceDetector.detect(frame);
-           /* for (int i = 0; i < faces.size(); i++) {
-                Face face = faces.valueAt(i);
-                for (Landmark landmark :
+        SparseArray<Face> faces = faceDetector.detect(frame);
+        Toast.makeText(context, "faces found: " + faces.size(), Toast.LENGTH_SHORT).show();
+            for (int i = 0; i < faces.size(); i++) {
+               // Face face = faces.valueAt(i);
+                getClassifications(context, faces.valueAt(i), i);
+                /*for (Landmark landmark :
                         face.getLandmarks()) {
                     int x = (int) (landmark.getPosition().x * 3);
-                    int y = (int) (landmark.getPosition().y * 3);
+                    int y = (int) (landmark.getPosition().y * 3);*/
                  //   getCanvas(bitmap).drawCircle(x, y, 10, getPaint());
                 }
-            }*/
+           // }
         //}
-        Toast.makeText(context, "faces found: " + faces.size(), Toast.LENGTH_SHORT).show();
+
+        // Log.i(LOG_TAG, "IIIIIIIIIII");
         faceDetector.release();
+    }
+
+    private static void getClassifications(Context context, Face face, int i){
+        Toast.makeText(context,
+                "face number " + i + ":\n"
+                + " Left Eye: " + face.getIsLeftEyeOpenProbability() + "\n"
+                + " Right Eye: " + face.getIsRightEyeOpenProbability() + "\n"
+                + " Smiling: " + face.getIsSmilingProbability(),
+                     Toast.LENGTH_SHORT).show();
     }
 
     private static Canvas getCanvas(Bitmap bitmap){
